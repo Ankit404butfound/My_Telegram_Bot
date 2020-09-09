@@ -11,6 +11,9 @@ import random
 import json
 import time
 import requests
+import pytz
+import datetime
+import threading
 
 PORT = int(os.environ.get('PORT', 5000))
 count = 0
@@ -36,6 +39,60 @@ def joke(bot,update):
 ##    while True:
 ##        robot.sendMessage(-403832831,"Hi")
 ##        time.sleep(5)
+
+mybot = Bot(TOKEN)
+
+def add_bday(bot,update):
+      #print(firstname)
+    try:
+        
+        file_data = requests.get("http://rajma.pythonanywhere.com/retreve?uname=date&method=r").text
+        uname = str(update.message.from_user.username)
+        msg = update.message.text
+        msg = msg.replace("/AddBday ","")
+        month = int(msg.split("/")[1])
+        date = int(msg.split("/")[0])
+        datetime.datetime(year=2001,month=month,day=date)
+        print(uname,date,month,msg)
+        if f"@{uname}" in file_data:
+            update.message.reply_text("You have already registered your birthday.")
+
+        else:
+            update.message.reply_text("Your Birthday (%s) has been added."%msg)
+            requests.get("http://rajma.pythonanywhere.com/retreve?uname=date&method=a&data=@%s : %s/%s\n"%(uname,date,month))
+
+    except Exception as e:
+        update.message.reply_text("@Tag_Kiya_kya see, your friend is not providing correct date format.\n(Error message : %s)"%str(e))
+
+
+def check_bday():
+    while True:
+        file = requests.get("http://rajma.pythonanywhere.com/retreve?uname=date&method=r").text
+        last_checked_date = file.split("\n")[0].replace("Today : ","")
+        dateinfo = datetime.datetime.now(pytz.timezone('Asia/Kolkata'))
+        date = str(dateinfo.date())
+        DD,MM = int(date.split("-")[1]),int(date.split("-")[2])
+        #print(DD,MM)
+        str_date = f"{DD}/{MM}"
+        if last_checked_date == str_date:
+            pass
+
+        else:
+            print(str_date)
+            
+            for details in file.split("\n"):
+                if details != "" and "Today" not in details:
+                    bday_info = details.split(" : ")[1]
+                    birthdate = int(bday_info.split("/")[0])
+                    birthmonth = int(bday_info.split("/")[1])
+                    birthday = f"{birthdate}/{birthmonth}"
+                    print(birthday)
+                    if birthday == str_date:
+                        print(f'Today is birthday of {details.split(" : ")[0]}')
+        
+            updated_data = file.replace(f"Today : {last_checked_date}",f"Today : {str_date}")
+            requests.get("http://rajma.pythonanywhere.com/retreve?uname=date&method=w&data="+updated_data)
+
 
 def start(bot,update):#(update, context):
     """Send a message when the command /start is issued."""
@@ -167,6 +224,7 @@ def main():
     dp.add_handler(CommandHandler("facts", facts))
     dp.add_handler(CommandHandler("what_do_you_think", what_do_you_think))
     dp.add_handler(CommandHandler("joke", joke))
+    dp.add_handler(CommandHandler("AddBday", add_bday))
 
     # on noncommand i.e message - echo the message on Telegram
     dp.add_handler(MessageHandler(Filters.text, echo))
