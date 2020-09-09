@@ -88,7 +88,7 @@ def check_bday():
                     birthday = f"{birthdate}/{birthmonth}"
                     print(birthday)
                     if birthday == str_date:
-                        print(f'Today is birthday of {details.split(" : ")[0]}')
+                        mybot.sendMessage(-402125669,(f'Happy Birthday {details.split(" : ")[0]}, have a great centuary ahead.'))
         
             updated_data = file.replace(f"Today : {last_checked_date}",f"Today : {str_date}")
             requests.get("http://rajma.pythonanywhere.com/retreve?uname=date&method=w&data="+updated_data)
@@ -246,7 +246,9 @@ def main():
 if __name__ == '__main__':
     #keepalive()
     try:
+        threading.Thread(target=check_bday).start()                                              
         open("database.txt")
+                                                      
 
     except:
         file = open("database.txt","w")
