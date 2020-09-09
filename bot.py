@@ -72,7 +72,7 @@ def check_bday():
         dateinfo = datetime.datetime.now(pytz.timezone('Asia/Kolkata'))
         date = str(dateinfo.date())
         DD,MM = int(date.split("-")[1]),int(date.split("-")[2])
-        #print(DD,MM)
+        print(DD,MM)
         str_date = f"{DD}/{MM}"
         if last_checked_date == str_date:
             pass
