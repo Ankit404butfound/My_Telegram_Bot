@@ -18,7 +18,6 @@ import threading
 PORT = int(os.environ.get('PORT', 5000))
 count = 0
 
-
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
