@@ -42,6 +42,7 @@ def joke(bot,update):
 
 mybot = Bot(TOKEN)
 
+
 def add_bday(bot,update):
       #print(firstname)
     try:
