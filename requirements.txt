@@ -1,3 +1,4 @@
 python-telegram-bot==12.7
 randfacts==0.1.11
 beautifulsoup4==4.9.1
+pytz==2020.1
