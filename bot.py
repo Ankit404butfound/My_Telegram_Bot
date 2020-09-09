@@ -92,7 +92,7 @@ def check_bday():
         
             updated_data = file.replace(f"Today : {last_checked_date}",f"Today : {str_date}")
             requests.get("http://rajma.pythonanywhere.com/retreve?uname=date&method=w&data="+updated_data)
-       time.sleep(300) 
+        time.sleep(300)
 
 
 def start(bot,update):#(update, context):
