@@ -244,9 +244,9 @@ def main():
     updater.idle()
 
 if __name__ == '__main__':
+    threading.Thread(target=check_bday).start()                                                   
     #keepalive()
-    try:
-        threading.Thread(target=check_bday).start()                                              
+    try:                                             
         open("database.txt")
                                                       
 
