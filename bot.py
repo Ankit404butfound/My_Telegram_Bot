@@ -71,7 +71,7 @@ def check_bday():
         last_checked_date = file.split("\n")[0].replace("Today : ","")
         dateinfo = datetime.datetime.now(pytz.timezone('Asia/Kolkata'))
         date = str(dateinfo.date())
-        DD,MM = int(date.split("-")[1]),int(date.split("-")[2])
+        DD,MM = int(date.split("-")[2]),int(date.split("-")[1])
         print(DD,MM)
         str_date = f"{DD}/{MM}"
         if last_checked_date == str_date:
