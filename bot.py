@@ -249,7 +249,7 @@ def main():
     dp.add_handler(CommandHandler("what_do_you_think", what_do_you_think))
     dp.add_handler(CommandHandler("joke", joke))
     dp.add_handler(CommandHandler("AddBday", add_bday))
-    dp.add_handler(CommandHandler("today's significance", Todays_history))
+    dp.add_handler(CommandHandler("todays_significance", Todays_history))
 
     # on noncommand i.e message - echo the message on Telegram
     dp.add_handler(MessageHandler(Filters.text, echo))
