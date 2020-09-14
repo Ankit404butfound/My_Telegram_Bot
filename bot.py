@@ -41,6 +41,28 @@ def joke(bot,update):
 
 mybot = Bot(TOKEN)
 
+def Todays_history(bot=None,update=None):
+    
+    dateinfo = datetime.datetime.now(pytz.timezone('Asia/Kolkata'))
+    date = str(dateinfo.date())
+    DD,MM = int(date.split("-")[2]),int(date.split("-")[1])
+    str_date = f"{MM}/{DD}"
+    
+    data = requests.get("https://history.muffinlabs.com/date/%s"%str_date)
+    data = data.json()
+    content = data["data"]["Events"]
+    lenth = len(content)
+
+    particular_year = content[random.randint(0,lenth)]
+    year_num = particular_year["year"]
+
+    try:
+        update.message.reply_text(f"""Significance of todays' date\nOn {data["date"]} {year_num} {particular_year["text"]}""")
+
+    except:
+        mybot.sendMessage(-402125669,f"""Significance of todays' date\nOn {data["date"]} {year_num} {particular_year["text"]}""")
+    
+
 
 def add_bday(bot,update):
       #print(firstname)
@@ -92,6 +114,7 @@ def check_bday():
         
             updated_data = file.replace(f"Today : {last_checked_date}",f"Today : {str_date}")
             requests.get("http://rajma.pythonanywhere.com/retreve?uname=date&method=w&data="+updated_data)
+            Todays_history()
         time.sleep(300)
 
 
@@ -226,9 +249,11 @@ def main():
     dp.add_handler(CommandHandler("what_do_you_think", what_do_you_think))
     dp.add_handler(CommandHandler("joke", joke))
     dp.add_handler(CommandHandler("AddBday", add_bday))
+    dp.add_handler(CommandHandler("today's significance", Todays_history))
 
     # on noncommand i.e message - echo the message on Telegram
     dp.add_handler(MessageHandler(Filters.text, echo))
+                                                      
 
     # log all errors
     #dp.add_error_handler(error)
